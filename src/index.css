@@ -1,0 +1,4 @@
+/* Define a CSS class for the active link */
+a.active_link{
+  color: blue; /* Blue color for the active link */
+}
