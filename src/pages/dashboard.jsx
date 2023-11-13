@@ -1,9 +1,12 @@
+import Tablebox from "../components/table";
 
 
 const Dashboard = () => {
     return (
         <>
-            <p>dfe</p></>
+            <p>dfe</p>
+            <Tablebox />
+        </>
     )
 }
 

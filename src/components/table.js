@@ -17,29 +17,29 @@ import {
 import "../App.css";
 import { GrFormNext } from 'react-icons/gr'
 
-const Tablebox = ({ btn_title, path, jobslist, btnremove, wid,btncolor }) => {
+const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
 
 
   return (
     <>
 
-    {
-      btnremove ?<></> : <Button
-      colorScheme={btncolor? btncolor :"blue"}
-      bg={btncolor? btncolor :"#4160D8"}
-      fontSize="medium"
-      fontWeight="normal"
-      px="3em"
-      ml="20%"
-      my="2em"
-      mt='7em'
-    >
-      {`${btn_title} ` }{btncolor=='red'? '':''}
-    </Button>
-    }
-      
+      {
+        btnremove ? <></> : <Button
+          colorScheme={btncolor ? btncolor : "blue"}
+          bg={btncolor ? btncolor : "#4160D8"}
+          fontSize="medium"
+          fontWeight="normal"
+          px="3em"
+          ml="20%"
+          my="2em"
+          mt='7em'
+        >
+          {`${btn_title} `}{btncolor == 'red' ? '' : ''}
+        </Button>
+      }
+
       <TableContainer
-        w={wid? wid : "60%"}
+        w={wid ? wid : "60%"}
         m="auto"
         border="1px solid #D9D9D9"
         borderRadius="0.5em"
@@ -48,7 +48,7 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid,btncolor }) => {
           <Thead className="table_head">
             <Tr background="#FAFAFA">
               {
-                tableArr[0].map(ele=><Th>{ele} </Th>)
+                tableArr[0].map(ele => <Th>{ele} </Th>)
               }
             </Tr>
           </Thead>
@@ -56,23 +56,23 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid,btncolor }) => {
             <Tr>
               {
                 tableArr[1].map(ele => <Td>{ele} </Td>)
-             }
+              }
             </Tr>
-            
+
             <Tr background="#FAFAFA">
-            {
+              {
                 tableArr[1].map(ele => <Td>{ele} </Td>)
-             }
+              }
             </Tr>
             <Tr>
-            {
+              {
                 tableArr[1].map(ele => <Td>{ele} </Td>)
-             }
+              }
             </Tr>
             <Tr background="#FAFAFA">
-            {
+              {
                 tableArr[1].map(ele => <Td>{ele} </Td>)
-             }
+              }
             </Tr>
           </Tbody>
         </Table>
@@ -84,17 +84,17 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid,btncolor }) => {
 export default Tablebox;
 
 
-let tableArr = [[ 
+let tableArr = [[
   "",
-"#Reffernce",
-"Location",
-"Date Applied",
-"Job Category",
-"Job Type",
-"Resume",
-"Status"],
+  "#Reffernce",
+  "Location",
+  "Date Applied",
+  "Job Category",
+  "Job Type",
+  "Resume",
+  "Status"],
 [
- 
+
   <input
     type="radio"
     name="Job_title"
@@ -102,12 +102,12 @@ let tableArr = [[
     value="1"
     defaultChecked
   />,
-,
+  ,
   <Link color="blue.500">65454-sdvsdv</Link>
-,'Irvine , California , USA'
-,'08/30/2023'
-,'incurence'
-,'Claims Analyst',
+  , 'Irvine , California , USA'
+  , '08/30/2023'
+  , 'incurence'
+  , 'Claims Analyst',
   <Link color="blue">dfvdvd</Link>,
   <Box className="Box_Status">Applied</Box>
 ]]

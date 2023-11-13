@@ -9,7 +9,7 @@ export default function AllRoutes() {
         <Routes>
             <Route path="/create-user" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path = "/" element={Dashboard} />
+            <Route path = "/" element={<Dashboard />} />
             {/* <Route path="/" element={<Searchpage />} />
             <Route path="/search-jobs" element={<Searchpage />} />
             <Route path="/resetPassword" element={<Resetpassword />} />
