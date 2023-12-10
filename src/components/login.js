@@ -42,11 +42,13 @@ const LoginBox = () => {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
   
-      
-      const responseBody = await res.text();
-      
-      console.log('Response Body:', responseBody);
-      
+      // Assuming the response is a JSON string
+      const data = await res.text();
+      const jwt = data.split(' ')[2];
+      // save in local storage
+      localStorage.setItem('jwt_token', jwt)
+  
+        console.log(jwt);
     } catch (error) {
       console.error('Login Error:', error);
     }
