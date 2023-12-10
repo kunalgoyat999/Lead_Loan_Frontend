@@ -13,28 +13,54 @@ import PasswordInput from '../helper/PasswordInput';
 import FormController from '../helper/FormController';
 import { Link as Links } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
+const baseurl = 'http://15.206.88.137';
+const port = 8009;
 const LoginBox = () => {
   const [formData, setFormData] = useState({
-    loginId: '',
+    adminid: '',
     password: '',
   });
 
   const [errors, setErrors] = useState({
-    loginId: '',
+    adminid: '',
     password: '',
   });
 
   const navigate = useNavigate()
-
+  
+  const handleLogin = async (loginCredentials) => {
+    try {
+      let res = await fetch(`${baseurl}:${port}/api/payers/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginCredentials),
+      });
+  
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+  
+      
+      const responseBody = await res.text();
+      
+      console.log('Response Body:', responseBody);
+      
+    } catch (error) {
+      console.error('Login Error:', error);
+    }
+  };
+  
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validation logic
     const newErrors = {};
 
-    if (!formData.loginId.trim()) {
-      newErrors.loginId = 'Login ID is required.';
+    if (!formData.adminid.trim()) {
+      newErrors.adminid = 'Login ID is required.';
     }
 
     if (!formData.password.trim() || formData.password === '') {
@@ -46,9 +72,10 @@ const LoginBox = () => {
     // If there are no errors, you can proceed with form submission
     if (Object.keys(newErrors).length === 0) {
       // Perform your login logic here
-      // You can access form data with formData.loginId and formData.password
+      // You can access form data with formData.adminid and formData.password
       console.log(formData);
-      navigate('/')
+      handleLogin(formData)
+      // navigate('/')
     }
 
   };
@@ -58,10 +85,10 @@ const LoginBox = () => {
       <FormController
         label='Login Id'
         placeholder='Enter your Login Id'
-        name='loginId'
-        value={formData.loginId}
-        onChange={(e) => setFormData({ ...formData, loginId: e.target.value })}
-        error={errors.loginId}
+        name='adminid'
+        value={formData.adminid}
+        onChange={(e) => setFormData({ ...formData, adminid: e.target.value })}
+        error={errors.adminid}
       />
 
       <FormControl isRequired my='1em' isInvalid={!!errors.password}>
