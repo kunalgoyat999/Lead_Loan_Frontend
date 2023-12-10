@@ -1,11 +1,11 @@
-import Tablebox from "../components/table";
-
+// import Tablebox from "../components/table";
+import Table from "../components/leadtable"
 
 const Dashboard = () => {
     return (
         <>
             <p>dfe</p>
-            <Tablebox />
+            <Table />
         </>
     )
 }
