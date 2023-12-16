@@ -5,7 +5,7 @@ const Dashboard = () => {
     return (
         <>
             <p>dfe</p>
-            <Table />
+            <Tablebox btn_title={"Assign"}/>
         </>
     )
 }

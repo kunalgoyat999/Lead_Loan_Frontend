@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -13,6 +14,8 @@ import {
 import FormController from "../helper/FormController";
 import PasswordInput from "../helper/PasswordInput";
 import validator from 'validator'; // Import the validator package
+import { createUser } from '../services/api';
+import { useNavigate } from "react-router-dom";
 
 const SignupBox = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +25,7 @@ const SignupBox = () => {
     confirmPassword: "",
     policyAccepted: false,
   });
+  const navigate = useNavigate()
 
   const [errors, setErrors] = useState({}); // Track form errors
 
@@ -65,7 +69,18 @@ const SignupBox = () => {
     const isValid = validateForm();
     if (isValid) {
       // Perform form submission
-      console.log("Form data:", formData);
+      try {
+        createUser(formData).then((res)=> {
+          // console.log("resss", res.data.jwt)
+          // if(res.data.message == "admin login succesfully"){
+            
+            Alert("User Created Successfully")
+          // }
+        })
+      } catch (error) {
+        console.error('Create User Error:', error);
+      }
+
     }
   };
 

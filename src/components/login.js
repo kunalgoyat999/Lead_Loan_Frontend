@@ -13,8 +13,8 @@ import PasswordInput from '../helper/PasswordInput';
 import FormController from '../helper/FormController';
 import { Link as Links } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-const baseurl = 'http://15.206.88.137';
-const port = 8009;
+import { login } from '../services/api';
+
 const LoginBox = () => {
   const [formData, setFormData] = useState({
     adminid: '',
@@ -30,25 +30,13 @@ const LoginBox = () => {
   
   const handleLogin = async (loginCredentials) => {
     try {
-      let res = await fetch(`${baseurl}:${port}/api/payers/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginCredentials),
-      });
-  
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-  
-      // Assuming the response is a JSON string
-      const data = await res.text();
-      const jwt = data.split(' ')[2];
-      // save in local storage
-      localStorage.setItem('jwt_token', jwt)
-  
-        console.log(jwt);
+      login(loginCredentials).then((res)=> {
+        console.log("resss", res.data.jwt)
+        if(res.data.message == "admin login succesfully"){
+          localStorage.setItem('jwt_token', res.data.jwt)
+          navigate('/')
+        }
+      })
     } catch (error) {
       console.error('Login Error:', error);
     }

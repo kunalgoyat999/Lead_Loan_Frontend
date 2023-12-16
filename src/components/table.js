@@ -16,9 +16,13 @@ import {
 } from "@chakra-ui/react";
 import "../App.css";
 import { GrFormNext } from 'react-icons/gr'
+import FileUploader from "./fileUploader";
 
 const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
-
+  const handleUpload = (data) => {
+    console.log('Uploaded Excel data:', data);
+    // Handle the uploaded data as needed
+  };
 
   return (
     <>
@@ -37,6 +41,10 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
           {`${btn_title} `}{btncolor == 'red' ? '' : ''}
         </Button>
       }
+
+
+
+      <FileUploader onUpload={handleUpload}/>
 
       <TableContainer
         w={wid ? wid : "60%"}
@@ -86,17 +94,17 @@ export default Tablebox;
 
 let tableArr = [[
   "",
-  "#Reffernce",
-  "Location",
-  "Date Applied",
-  "Job Category",
-  "Job Type",
-  "Resume",
-  "Status"],
+  "Date",
+  "Name",
+  "Mobile",
+  "Loan Amount",
+  "Status",
+  "Remark",
+  "Edit"],
 [
 
   <input
-    type="radio"
+    type="checkbox"
     name="Job_title"
     id="table_radio"
     value="1"
