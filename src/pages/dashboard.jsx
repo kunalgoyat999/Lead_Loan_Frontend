@@ -1,11 +1,11 @@
 // import Tablebox from "../components/table";
-import Table from "../components/leadtable"
+import Table from "../components/table"
 
 const Dashboard = () => {
     return (
         <>
             <p>dfe</p>
-            <Tablebox btn_title={"Assign"}/>
+            <Table />
         </>
     )
 }
