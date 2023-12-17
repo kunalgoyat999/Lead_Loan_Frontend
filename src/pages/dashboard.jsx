@@ -1,13 +1,17 @@
-// import Tablebox from "../components/table";
-import Table from "../components/leadtable"
+import Tablebox from "../components/table";
+import Table from "../components/leadtable";
+import { useEffect } from "react";
 
 const Dashboard = () => {
-    return (
-        <>
-            <p>dfe</p>
-            <Tablebox btn_title={"Assign"}/>
-        </>
-    )
-}
+  useEffect(() => {
+    console.log("here");
+  }, []);
+  return (
+    <>
+      <p>dfe</p>
+      <Tablebox btn_title={"Assign"} />
+    </>
+  );
+};
 
 export default Dashboard;
