@@ -15,19 +15,31 @@ import {
   background,
   Heading,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import "../App.css";
 import { GrFormNext } from "react-icons/gr";
 import FileUploader from "./fileUploader";
 import { useEffect, useState } from "react";
-import { getAllLeadByAdmin, getLeadByEmployee } from "../services/api";
+import {
+  assignLead,
+  getAllEmployees,
+  getAllLeadByAdmin,
+  getLeadByEmployee,
+} from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "../assests/css/table.css";
 
 const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   const [admin, setAdmin] = useState(false);
   const [leads, setLeads] = useState([]);
   const navigate = useNavigate();
   const [checkedValues, setCheckedValues] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [employees, setEmployees] = useState([]);
+  const [employeeId, setEmployeeId] = useState("");
+  let toast = useToast();
+  let token = localStorage.getItem("jwt_token");
 
   const handleUpload = (data) => {
     console.log("Uploaded Excel data:", data);
@@ -37,7 +49,6 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   useEffect(() => {
     let role = localStorage.getItem("role");
     let employeeId = localStorage.getItem("empolyeeId");
-    let token = localStorage.getItem("jwt_token");
 
     if (role != "USER") {
       setAdmin(true);
@@ -46,9 +57,13 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
     console.log("empolye", employeeId);
     if (employeeId != null) {
       try {
-        getLeadByEmployee(token, employeeId).then((res) => {
-          console.log("ressemployee", res);
-        });
+        getLeadByEmployee(token, employeeId)
+          .then((res) => {
+            console.log("ressemployee", res);
+          })
+          .catch((error) => {
+            console.log("error", error);
+          });
       } catch (error) {
         console.log("error", error);
       }
@@ -70,7 +85,7 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
     const value = event.target.value;
     const isChecked = event.target.checked;
 
-    console.log("value,", value, "isChecked", isChecked)
+    console.log("value,", value, "isChecked", isChecked);
     // Update the state based on the checkbox change
     if (isChecked) {
       setCheckedValues((prevCheckedValues) => [...prevCheckedValues, value]);
@@ -82,16 +97,51 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   };
 
   const handleAssign = () => {
-    console.log("checkedValues", checkedValues)
-    // if()
-  }
+    console.log("checkedValues", checkedValues);
+
+    getAllEmployees(token).then((res) => {
+      console.log("resss", res.data);
+      setEmployees(res.data);
+    });
+  };
+
+  const handleAssigneDone = () => {
+    console.log(
+      "token, employeeId, checkedValues",
+      token,
+      employeeId,
+      checkedValues
+    );
+    let data = {
+      leads: checkedValues,
+    };
+    assignLead(token, employeeId, data).then((res) => {
+      console.log("assignLead", res);
+      if (res.status == 200) {
+        let success = "Lead Assign Successful";
+        toast({
+          title: `${success}`,
+          status: "success",
+          position: "bottom",
+          isClosable: true,
+        });
+      }
+      closeModal();
+    });
+  };
+
+  useEffect(() => {
+    if (employees.length != 0) {
+      setModalOpen(true);
+    }
+  }, [employees]);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div style={{}}>
-      <Text as="b" fontSize="3xl" m="1">
-        Welcome to Fin Access
-      </Text>
-
       {admin && (
         <>
           <Button
@@ -177,6 +227,59 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
             </Tbody>
           </Table>
         </TableContainer>
+
+        <div className="App">
+          {isModalOpen && (
+            <div className="modal">
+              <div className="modal-content">
+                {employees.length != 0 &&
+                  employees.map((ele) => {
+                    return (
+                      <div style={{ display: "flex" }}>
+                        <input
+                          type="radio"
+                          value={employeeId}
+                          name="employeeRadio"
+                          checked={employeeId === ele.id}
+                          onChange={() => setEmployeeId(ele.id)}
+                        />
+                        <p color="black" style={{ marginLeft: "20px" }}>
+                          {ele.email}
+                        </p>
+                      </div>
+                    );
+                  })}
+                <div style={{ display: "flex", marginTop: "20px" }}>
+                  <span
+                    onClick={handleAssigneDone}
+                    style={{
+                      marginRight: "20px",
+                      backgroundColor: "green",
+                      padding: "5px",
+                      borderRadius: "3px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p style={{ color: "white" }}> Assign </p>
+                  </span>
+                  <span
+                    onClick={closeModal}
+                    style={{
+                      marginRight: "20px",
+                      backgroundColor: "red",
+                      padding: "5px",
+                      borderRadius: "3px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p style={{ color: "white" }}> Close </p>
+                  </span>
+                </div>
+                {/* <p>Modal Content Goes Here</p> */}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

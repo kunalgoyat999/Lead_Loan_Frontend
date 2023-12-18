@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import assets from "../assests";
-import { Text, Button } from "@chakra-ui/react";
+import { Text, Button, useToast } from "@chakra-ui/react";
 import Loginbox from "../components/login";
 import SignupBox from "../components/Signup";
 import "../assests/styles.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { getSingleLead, updateLead } from "../services/api";
-import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SingleLead = () => {
@@ -17,7 +16,7 @@ const SingleLead = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [remark, setRemark] = useState("");
   let token = localStorage.getItem("jwt_token");
-
+  let toast = useToast();
   useEffect(() => {
     
     getSingleLead(token, id).then((res) => {
@@ -44,14 +43,13 @@ const SingleLead = () => {
     updateLead(token, id, data).then((res)=> {
       console.log("resspon", res)
       if(res.data == "Lead updated successfully"){
-        toast.success('This is a success message!', {
-          position: 'bottom-center',
-          autoClose: 3000, // Close the toast after 3000 milliseconds (3 seconds)
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        let success = "Lead updated successfully";
+            toast({
+              title: `${success}`,
+              status: "success",
+              position: "bottom",
+              isClosable: true,
+            });
       }
     })
   };

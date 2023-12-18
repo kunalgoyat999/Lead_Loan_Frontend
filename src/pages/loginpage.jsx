@@ -14,9 +14,9 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div >
+    <div style={{display: "flex", justifyContent: "space-around", marginTop: "50px"}}>
       <div>
-        <img src={assets.images.LOGIN.BANNER} alt="" />
+        <img src={assets.images.LOGIN.BANNER} alt="" style={{width: "500px"}}/>
       </div>
       <div >
         <Text as="b" fontSize="3xl" m="1">
