@@ -8,6 +8,7 @@ import {
   Button,
   Link,
   Checkbox,
+  useToast
 } from "@chakra-ui/react";
 import PasswordInput from "../helper/PasswordInput";
 import FormController from "../helper/FormController";
@@ -25,7 +26,7 @@ const LoginBox = () => {
     adminid: "",
     password: "",
   });
-
+  let toast = useToast();
   const navigate = useNavigate();
 
   const handleLogin = async (loginCredentials) => {
@@ -45,6 +46,19 @@ const LoginBox = () => {
             localStorage.setItem("empolyeeId", res.data.user.id);
           }
           navigate("/dashboard");
+
+      }).catch(error => {
+        
+        if(error.response.status === 404 || error.response.status === 401){
+          let waring =  "Invalid Credentials" ;
+          toast({
+            title: `${waring}`,
+            status: "warning",
+            position: "top-right",
+            isClosable: true,
+          })
+        }
+        
         }
       });
     } catch (error) {
