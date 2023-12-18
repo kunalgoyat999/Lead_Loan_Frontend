@@ -14,11 +14,11 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="register_box">
+    <div >
       <div>
         <img src={assets.images.LOGIN.BANNER} alt="" />
       </div>
-      <div className="register_container">
+      <div >
         <Text as="b" fontSize="3xl" m="1">
           Welcome to Fin Access
         </Text>

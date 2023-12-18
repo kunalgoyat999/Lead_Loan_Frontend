@@ -31,10 +31,6 @@ const FileUploader = ({ onUpload }) => {
   };
 
   return (
-    // <div {...getRootProps()} style={dropzoneStyles}>
-    //   <input {...getInputProps()} />
-    //   <p>{isDragActive ? 'Drop the file here ...' : 'Drag and drop a file here, or click to select a file'}</p>
-    // </div>
     <div>
       <h1>File Input Example</h1>
       <input type="file" onChange={handleFileChange} />

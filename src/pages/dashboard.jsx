@@ -1,6 +1,7 @@
 import Tablebox from "../components/table";
 import Table from "../components/leadtable";
 import { useEffect } from "react";
+import { Text, Button } from "@chakra-ui/react";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -8,7 +9,7 @@ const Dashboard = () => {
   }, []);
   return (
     <>
-      <p>dfe</p>
+    
       <Tablebox btn_title={"Assign"} />
     </>
   );

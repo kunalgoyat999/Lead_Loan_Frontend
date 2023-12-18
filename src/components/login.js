@@ -40,8 +40,9 @@ const LoginBox = () => {
           localStorage.setItem("role", res.data.user.role);
           localStorage.setItem("userName", res.data.user.adminid);
           let userDetail = res.data.user;
-          if (userDetail.length == 3) {
-            localStorage.setItem("empolyeeId", userDetail.id);
+
+          if (res.data.user.role != "ADMIN") {
+            localStorage.setItem("empolyeeId", res.data.user.id);
           }
           navigate("/dashboard");
         }

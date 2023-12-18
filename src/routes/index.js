@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../pages/dashboard";
 import SignupPage from "../pages/Signuppage";
 import LoginPage from "../pages/loginpage";
+import SingleLead from "../pages/singleLead";
 import NavBar from "../components/Nav";
 
 export default function AllRoutes() {
@@ -35,6 +36,15 @@ export default function AllRoutes() {
               <>
                 <NavBar />
                 <SignupPage />
+              </>
+            }
+          />
+          <Route
+            path="/single-lead"
+            element={
+              <>
+                <NavBar />
+                <SingleLead />
               </>
             }
           />
