@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import assets from "../assests";
@@ -10,6 +10,21 @@ const NavBar = () => {
   let [isLogin, setLogin] = useState(true);
   let toast = useToast();
   let navigate = useNavigate();
+  const [admin, setAdmin] = useState(false);
+  const [userName, setUsername] = useState("");
+  useEffect(() => {
+    let role = localStorage.getItem("role");
+    let username = localStorage.getItem("userName");
+
+    if (username != null) {
+      setUsername(username);
+    }
+
+    if (role != "USER") {
+      setAdmin(true);
+    }
+  });
+
   return (
     <Box
       m="auto"
@@ -23,20 +38,22 @@ const NavBar = () => {
       <Image src={assets.images.COMMON.APP_LOGO} alt="Alchemus Logo" />
       {isLogin && (
         <>
-          <NavLink  to="/" activeClassName="active-link">
+          <NavLink to="/dashboard" activeClassName="active-link">
             DASHBOARD
           </NavLink>
-          <NavLink  to="/create-user" activeClassName="active-link">
-            CREATE USER
-          </NavLink>
-          
+          {admin && (
+            <NavLink to="/create-user" activeClassName="active-link">
+              CREATE USER
+            </NavLink>
+          )}
+
           <Box>
             <Text fontSize="1.2em" className="navbar_profile_box">
               <Image
                 src={assets.images.LOGIN.PROFILE}
                 style={{ marginRight: "0.3em" }}
               />
-              {"Vishal"}{" "}
+              {userName}
             </Text>
             <Box className="logout_box">
               {" "}
@@ -44,7 +61,8 @@ const NavBar = () => {
                 id="logout_btn"
                 onClick={() => {
                   setLogin(false);
-                  navigate('/login')
+                  localStorage.clear();
+                  navigate("/");
                 }}
                 borderRadius={"none"}
               >
@@ -53,19 +71,18 @@ const NavBar = () => {
             </Box>
           </Box>
         </>
-      // ) : (
-      //   <Box className="nav_login_box" fontSize='md'>
-      //     <NavLink  to="/login" activeClassName="active-link">
-      //       LOGIN{" "}
-      //     </NavLink>
-      //     {" | "}
-      //     <NavLink  to="/signup" activeClassName="active-link">
-      //       {" "}
-      //       SIGNUP
-      //     </NavLink>
-      //   </Box>
-      )
-    }
+        // ) : (
+        //   <Box className="nav_login_box" fontSize='md'>
+        //     <NavLink  to="/login" activeClassName="active-link">
+        //       LOGIN{" "}
+        //     </NavLink>
+        //     {" | "}
+        //     <NavLink  to="/signup" activeClassName="active-link">
+        //       {" "}
+        //       SIGNUP
+        //     </NavLink>
+        //   </Box>
+      )}
     </Box>
   );
 };

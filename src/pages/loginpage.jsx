@@ -7,23 +7,23 @@ import "../assests/styles.css";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
- const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     // console.log(status, "fffdsc");
   }, []);
 
   return (
-    <div className="register_box">
+    <div >
       <div>
         <img src={assets.images.LOGIN.BANNER} alt="" />
       </div>
-      <div className="register_container">
+      <div >
         <Text as="b" fontSize="3xl" m="1">
           Welcome to Fin Access
         </Text>
-        <div className="login_signupToggle">
-          <Button
+        {/* <div className="login_signupToggle"> */}
+        {/* <Button
             color="white" 
             colorScheme="blue" 
             bg="#4160D8" 
@@ -35,9 +35,9 @@ const LoginPage = () => {
             }}
           >
             Login
-          </Button>
+          </Button> */}
 
-          {/* <Button
+        {/* <Button
             colorScheme="" 
             bg="" 
             color="black"
@@ -50,7 +50,7 @@ const LoginPage = () => {
           >
             Signup
           </Button> */}
-        </div>
+        {/* </div> */}
         <Loginbox />
       </div>
     </div>

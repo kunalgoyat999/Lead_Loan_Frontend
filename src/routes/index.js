@@ -1,25 +1,55 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect, useState, useNavigate } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../pages/dashboard";
 import SignupPage from "../pages/Signuppage";
 import LoginPage from "../pages/loginpage";
+import SingleLead from "../pages/singleLead";
+import NavBar from "../components/Nav";
 
 export default function AllRoutes() {
-    return (
-        <Routes>
-            <Route path="/create-user" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path = "/" element={<Dashboard />} />
-            {/* <Route path="/" element={<Searchpage />} />
-            <Route path="/search-jobs" element={<Searchpage />} />
-            <Route path="/resetPassword" element={<Resetpassword />} />
-            <Route path='/my-profile' element={<Myprofile />} />
-            <Route path='/referred-jobs' element={<RefferdJobs/>} />
-            <Route path='/saved-jobs' element={<SavedJobs />} />
-            <Route path='/jobs-applied' element={<JobsApplied />} />
-            <Route path='/document-repository' element={<DocumentoryRepo/>} />
-            <Route path='/profile' element={<Profile />} />      
-            <Route path='/job-details' element={<Job_Details />} />       */}
-        </Routes>
-    )
+  const [authenticate, setAuthenticate] = useState(false);
+
+  useEffect(() => {
+    let token = localStorage.getItem("jwt_token");
+    console.log("token", token);
+    if (token != null) {
+      setAuthenticate(true);
+    }
+  });
+  return (
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      {authenticate ? (
+        <>
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <NavBar />
+                <Dashboard />
+              </>
+            }
+          />
+          <Route
+            path="/create-user"
+            element={
+              <>
+                <NavBar />
+                <SignupPage />
+              </>
+            }
+          />
+          <Route
+            path="/single-lead"
+            element={
+              <>
+                <NavBar />
+                <SingleLead />
+              </>
+            }
+          />
+        </>
+      ) : null}
+    </Routes>
+  );
 }

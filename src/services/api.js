@@ -1,67 +1,34 @@
-import {api, apiWithHeader} from './axiosConfig';
+import { api, apiWithHeader } from "./axiosConfig";
 
-export const login = data => {
-  return api.post('/api/payers/login', data);
+export const login = (data) => {
+  console.log("data", data);
+  return api.post("/api/payers/login", data);
 };
 
 export const createUser = (token, data) => {
-  return apiWithHeader(token).post('/api/payers/create-user', data);
+  return apiWithHeader(token).post("/api/payers/create-user", data);
 };
 
-
-
-
-
-
-
-
-
-
-export const signUp = data => {
-  return api.post(`/api/v1/users/verifyUserId?userId=${data}`)
+export const getLeadByEmployee = (token, id) => {
+  return apiWithHeader(token).get(`/leads/emp/${id}`)
 }
 
-export const forgotPassword = data => {
-  return api.post(`/api/v1/users/forgotPassword?userId=${data}`)
+export const getAllLeadByAdmin = (token) => {
+  return apiWithHeader(token).get(`/leads`)
 }
 
-export const verifyOtpSetPassword = (userId, otp, password) => {
-  console.log("userId, otp, password", userId, otp, password)
-  return api.post(`/api/v1/auth/verify-otp-and-set-password?userId=${userId}&otpCode=${otp}&newPassword=${password}`)
+export const getAllLeadId = (token, id) => {
+  return apiWithHeader(token).get(`/leads${id}`)
 }
 
-export const createLead = (data, token) => {
-  return apiWithHeader(token).post(`/api/lead/v1/createLead`, data)
+export const getSingleLead = (token, id) => {
+  return apiWithHeader(token).get(`leads/${id}`)
 }
 
-export const getPincodeData = (token, pincode) => {
-  return apiWithHeader(token).get(`/api/v1/master/postalrecord?pincode=${pincode}`)
+export const updateLead = (token, id, data) => {
+  return apiWithHeader(token).put(`leads/${id}`, data)
 }
 
-export const getAllLead = (token, page, data) => {
-  return apiWithHeader(token).post(`/api/lead/v1/getAllLeads?page=${page}&size=12`, data)
-}
-
-export const homeDashboard = (token, data) => {
-  return apiWithHeader(token).post(`/los/api/lead/v1/getLeadCounts`, data)
-}
-
-export const getLeadById = (token, id) => {
-  return apiWithHeader(token).get(`/api/lead/v1/getLeadById?leadId=${id}`)
-}
-
-export const addFollowUp = (token, data) => {
-  return apiWithHeader(token).post(`/api/lead/v1/addLeadFollowUp`, data)
-}
-
-export const getProfile = (token) => {
-  return apiWithHeader(token).get(`/user-service/api/users/v1/fetchProfile`)
-  .then((res)=> {
-    console.log("resskun", res?.data?.data)
-    return res?.data.data
-  })
-}
-
-export const logout = (token) => {
-  return apiWithHeader(token).get(`/api/v1/logout`)
+export const assignLead = (token, id, data) => {
+  return apiWithHeader(token).post(`leads/emp/${id}`, data)
 }

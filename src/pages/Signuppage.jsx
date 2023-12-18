@@ -7,7 +7,7 @@ import "../assests/styles.css";
 import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     // console.log(status, "fffdsc");
@@ -22,9 +22,9 @@ const SignupPage = () => {
         <Text as="b" fontSize="3xl" m="1">
           Welcome to Fin Access
         </Text>
-        <div className="login_signupToggle">
+        {/* <div className="login_signupToggle"> */}
 
-          <Button
+        {/* <Button
             colorScheme= "blue"
             bg="#4160D8"
             color= "white"
@@ -36,8 +36,8 @@ const SignupPage = () => {
             }}
           >
             Create User
-          </Button>
-        </div>
+          </Button> */}
+        {/* </div> */}
         {/* <Loginbox /> */}
 
         <SignupBox />
