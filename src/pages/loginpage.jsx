@@ -11,14 +11,19 @@ const LoginPage = () => {
 
   useEffect(() => {
     // console.log(status, "fffdsc");
+    let token = localStorage.getItem("jwt_token");
+    console.log("token", token);
+    if (token != null) {
+      navigate(-1)
+    }
   }, []);
 
   return (
-    <Box display="flex" justifyContent="space-evenly">
+    <Box display="flex" justifyContent="space-evenly" mt='3em'>
       <div style={{ flex: "1", margin: "1%" }}>
-        <img src={assets.images.LOGIN.BANNER} alt="" style={{ width: "500px" }} />
+        <img src={assets.images.LOGIN.BANNER} alt="" style={{ width: "600px" }} />
       </div>
-      <div style={{ flex: "1", margin: "1%" }}>
+      <div style={{ flex: "1", margin: "1%",marginTop:"8%"}}>
         <Text as="b" fontSize="3xl" m="1">
           Welcome to Fin Access
         </Text>

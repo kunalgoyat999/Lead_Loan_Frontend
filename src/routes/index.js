@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useNavigate } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate,useNavigate } from "react-router-dom";
 import Dashboard from "../pages/dashboard";
 import SignupPage from "../pages/Signuppage";
 import LoginPage from "../pages/loginpage";
@@ -8,14 +8,17 @@ import NavBar from "../components/Nav";
 
 export default function AllRoutes() {
   const [authenticate, setAuthenticate] = useState(false);
-
+let navigate = useNavigate()
   useEffect(() => {
     let token = localStorage.getItem("jwt_token");
     console.log("token", token);
-    if (token != null) {
+    if (token == null) {
+      navigate('/')
+    }else{
       setAuthenticate(true);
     }
-  });
+  }, []);
+  
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
