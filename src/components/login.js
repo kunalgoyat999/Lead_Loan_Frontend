@@ -31,39 +31,77 @@ const LoginBox = () => {
 
   const handleLogin = async (loginCredentials) => {
     try {
-      login(loginCredentials).then((res) => {
-        console.log("resss", res);
-        if (
-          res.data.message == "admin login succesfully" ||
-          res.data.message == "user login succesfully"
-        ) {
-          localStorage.setItem("jwt_token", res.data.jwt);
-          localStorage.setItem("role", res.data.user.role);
-          localStorage.setItem("userName", res.data.user.adminid);
-          let userDetail = res.data.user;
-
-          if (res.data.user.role != "ADMIN") {
-            localStorage.setItem("empolyeeId", res.data.user.id);
+      login(loginCredentials)
+        .then((res) => {
+          console.log("resss", res);
+    
+          if (
+            res.data.message === "admin login succesfully" ||
+            res.data.message === "user login succesfully"
+          ) {
+            localStorage.setItem("jwt_token", res.data.jwt);
+            localStorage.setItem("role", res.data.user.role);
+            localStorage.setItem("userName", res.data.user.adminid);
+    
+            let userDetail = res.data.user;
+    
+            if (res.data.user.role !== "ADMIN") {
+              localStorage.setItem("empolyeeId", res.data.user.id);
+            }
+    
+            navigate("/dashboard");
           }
-          navigate("/dashboard");
-
-      }).catch(error => {
-        
-        if(error.response.status === 404 || error.response.status === 401){
-          let waring =  "Invalid Credentials" ;
-          toast({
-            title: `${waring}`,
-            status: "warning",
-            position: "top-right",
-            isClosable: true,
-          })
-        }
-        
-        }
-      });
+        })
+        .catch((error) => {
+          if (error.response) {
+            // Server responded with an error status
+            const status = error.response.status;
+    
+            if (status === 404 || status === 401) {
+              let warning = "Invalid Credentials";
+              toast({
+                title: `${warning}`,
+                status: "warning",
+                position: "top-right",
+                isClosable: true,
+              });
+            } else {
+              // Handle other server errors
+              console.error("Server error:", error.response.data);
+              // Display a generic error message to the user
+              toast({
+                title: "An error occurred",
+                description: "Please try again later.",
+                status: "error",
+                position: "top-right",
+                isClosable: true,
+              });
+            }
+          } else {
+            // Handle other types of errors (e.g., network issues)
+            console.error("Network error:", error.message);
+            // Display a generic error message to the user
+            toast({
+              title: "Network error",
+              description: "Please check your internet connection.",
+              status: "error",
+              position: "top-right",
+              isClosable: true,
+            });
+          }
+        });
     } catch (error) {
-      console.error("Login Error:", error);
+      console.error("Unexpected error:", error);
+      // Display a generic error message to the user
+      toast({
+        title: "An unexpected error occurred",
+        description: "Please try again later.",
+        status: "error",
+        position: "top-right",
+        isClosable: true,
+      });
     }
+    
   };
 
   const handleSubmit = (e) => {
