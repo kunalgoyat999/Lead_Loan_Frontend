@@ -46,7 +46,7 @@ const LoginBox = () => {
             localStorage.setItem("empolyeeId", res.data.user.id);
           }
           navigate("/dashboard");
-        }
+
       }).catch(error => {
         
         if(error.response.status === 404 || error.response.status === 401){
@@ -59,6 +59,7 @@ const LoginBox = () => {
           })
         }
         
+        }
       });
     } catch (error) {
       console.error("Login Error:", error);
