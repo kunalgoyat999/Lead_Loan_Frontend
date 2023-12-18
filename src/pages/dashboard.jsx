@@ -9,7 +9,6 @@ const Dashboard = () => {
   }, []);
   return (
     <>
-    
       <Tablebox btn_title={"Assign"} />
     </>
   );
