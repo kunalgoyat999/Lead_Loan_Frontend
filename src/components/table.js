@@ -73,6 +73,8 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
           console.log("allLead", res.data.length);
           setLeads(res.data);
         }
+      }).catch((error) => {
+        console.log("error", error);
       });
     }
   }, []);
@@ -102,6 +104,8 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
     getAllEmployees(token).then((res) => {
       console.log("resss", res.data);
       setEmployees(res.data);
+    }).catch((error) => {
+      console.log("error", error);
     });
   };
 
@@ -127,6 +131,8 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
         });
       }
       closeModal();
+    }).catch((error) => {
+      console.log("error", error);
     });
   };
 
