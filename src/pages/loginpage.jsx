@@ -14,7 +14,7 @@ const LoginPage = () => {
     let token = localStorage.getItem("jwt_token");
     console.log("token", token);
     if (token != null) {
-      navigate(-1)
+      navigate('/dashboard')
     }
   }, []);
 
