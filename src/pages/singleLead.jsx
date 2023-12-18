@@ -17,11 +17,18 @@ const SingleLead = () => {
   const [remark, setRemark] = useState("");
   let token = localStorage.getItem("jwt_token");
   let toast = useToast();
+  const [createTime, setCreateTime] = useState('')
   useEffect(() => {
     
     getSingleLead(token, id).then((res) => {
       console.log("single", res.data);
       setSingleLead(res.data);
+      const dateObject = new Date(res.data.createdAt);
+
+                    // Format the date and time
+                    const formattedDate = dateObject.toLocaleDateString();
+                    const formattedTime = dateObject.toLocaleTimeString();
+                    setCreateTime(formattedDate)
     });
   }, []);
 
@@ -131,11 +138,15 @@ const SingleLead = () => {
             ? singleLead.remark.map((ele) =>
                 //  console.log("res", ele)
                 {
-                  console.log("resSingle", ele);
+                  const dateObject = new Date(ele.time);
+
+                    // Format the date and time
+                    const formattedDate = dateObject.toLocaleDateString();
+                    const formattedTime = dateObject.toLocaleTimeString();
                   return (
                     <p>
                       {ele.message}
-                      {` (${ele.time})`}
+                      {` (${formattedDate})`}
                     </p>
                   );
                 }
@@ -148,7 +159,7 @@ const SingleLead = () => {
         </div>
         <div>
           <p style={{ fontWeight: "bold" }}>Created At </p>
-          <p>{singleLead.createdAt}</p>
+          <p>{createTime}</p>
         </div>
       </div>
       <div

@@ -190,6 +190,14 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
             <Tbody className="table_body">
               {leads.length != 0
                 ? leads.map((ele, index) => {
+                  const dateObject = new Date(ele.createdAt);
+
+                    // Format the date and time
+                    const formattedDate = dateObject.toLocaleDateString();
+                    const formattedTime = dateObject.toLocaleTimeString();
+
+                    console.log("Formatted Date:", formattedDate);
+                    console.log("Formatted Time:", formattedTime);
                     return (
                       <Tr key={index}>
                         <Td>
@@ -200,7 +208,7 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
                             onChange={handleCheckboxChange}
                           />
                         </Td>
-                        <Td>{ele.createdAt}</Td>
+                        <Td>{`${formattedDate}`}</Td>
                         <Td>{ele.name}</Td>
                         <Td>{ele.gender}</Td>
                         <Td>{ele.loan_amount}</Td>
