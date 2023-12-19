@@ -17,6 +17,7 @@ const SingleLead = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [remark, setRemark] = useState("");
   let token = localStorage.getItem("jwt_token");
+  let toast = useToast();
 
   useEffect(() => {
     
@@ -134,9 +135,11 @@ const SingleLead = () => {
                 //  console.log("res", ele)
                 {
                   console.log("resSingle", ele);
+                  console.log("resSingle", ele);
                   return (
                     <p>
                       {ele.message}
+                      {` (${ele.time})`}
                       {` (${ele.time})`}
                     </p>
                   );
@@ -150,6 +153,7 @@ const SingleLead = () => {
         </div>
         <div>
           <p style={{ fontWeight: "bold" }}>Created At </p>
+          <p>{singleLead.createdAt}</p>
           <p>{singleLead.createdAt}</p>
         </div>
       </div>
