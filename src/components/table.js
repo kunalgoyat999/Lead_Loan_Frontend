@@ -15,13 +15,20 @@ import {
   background,
   Heading,
   Text,
-  Flex
+  Flex,
+  useToast
 } from "@chakra-ui/react";
 import "../App.css";
 import { GrFormNext } from "react-icons/gr";
 import FileUploader from "./fileUploader";
 import { useEffect, useState } from "react";
-import { getAllLeadByAdmin, getLeadByEmployee } from "../services/api";
+import {
+  assignLead,
+  getAllEmployees,
+  getAllLeadByAdmin,
+  getLeadByEmployee,
+} from "../services/api";
+import "../assests/css/table.css";
 import { useNavigate } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 
@@ -30,6 +37,11 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   const [leads, setLeads] = useState([]);
   const navigate = useNavigate();
   const [checkedValues, setCheckedValues] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [employees, setEmployees] = useState([]);
+  const [employeeId, setEmployeeId] = useState("");
+  let toast = useToast();
+  let token = localStorage.getItem("jwt_token");
 
   const handleUpload = (data) => {
     console.log("Uploaded Excel data:", data);
@@ -39,7 +51,6 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   useEffect(() => {
     let role = localStorage.getItem("role");
     let employeeId = localStorage.getItem("empolyeeId");
-    let token = localStorage.getItem("jwt_token");
 
     if (role != "USER") {
       setAdmin(true);
@@ -50,7 +61,10 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
       try {
         getLeadByEmployee(token, employeeId).then((res) => {
           console.log("ressemployee", res);
-        });
+          setLeads(res.data)
+        }).catch((error) => {
+          console.log("error", error);
+        })
       } catch (error) {
         console.log("error", error);
       }
@@ -60,7 +74,9 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
           console.log("allLead", res.data.length);
           setLeads(res.data);
         }
-      });
+      }).catch((error) => {
+        console.log("error", error);
+      })
     }
   }, []);
 
@@ -84,9 +100,49 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   };
 
   const handleAssign = () => {
-    console.log("checkedValues", checkedValues)
-    // if()
-  }
+    console.log("checkedValues", checkedValues);
+    getAllEmployees(token).then((res) => {
+      console.log("resss", res.data);
+      setEmployees(res.data);
+    }).catch((error) => {
+      console.log("error", error);
+    });
+  };
+  const handleAssigneDone = () => {
+    console.log(
+      "token, employeeId, checkedValues",
+      token,
+      employeeId,
+      checkedValues
+    );
+    let data = {
+      leads: checkedValues,
+    };
+    assignLead(token, employeeId, data).then((res) => {
+      console.log("assignLead", res);
+      if (res.status == 200) {
+        let success = "Lead Assign Successful";
+        toast({
+          title: `${success}`,
+          status: "success",
+          position: "bottom",
+          isClosable: true,
+        });
+      }
+      closeModal();
+    }).catch((error) => {
+      console.log("error", error);
+    });
+  };
+  useEffect(() => {
+    if (employees.length != 0) {
+      setModalOpen(true);
+    }
+  }, [employees]);
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
 
   return (
     <div style={{}}>
@@ -139,6 +195,12 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
             <Tbody className="table_body">
               {leads.length != 0
                 ? leads.map((ele, index) => {
+                  const dateObject = new Date(ele.createdAt);
+
+                    // Format the date and time
+                    const formattedDate = dateObject.toLocaleDateString();
+                    const formattedTime = dateObject.toLocaleTimeString();
+
                     return (
                       <Tr key={index}>
                         <Td>
@@ -149,9 +211,10 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
                             onChange={handleCheckboxChange}
                           />
                         </Td>
-                        <Td>{ele.createdAt}</Td>
+                        <Td>{formattedDate}</Td>
                         <Td>{ele.name}</Td>
                         <Td>{ele.gender}</Td>
+                        <Td>{ele.phone_number}</Td>
                         <Td>{ele.loan_amount}</Td>
                         <Td>{ele.status.toUpperCase()}</Td>
                         <Td>
@@ -174,6 +237,58 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
             </Tbody>
           </Table>
         </TableContainer>
+      <div className="App">
+          {isModalOpen && (
+            <div className="modal">
+              <div className="modal-content">
+                {employees.length != 0 &&
+                  employees.map((ele) => {
+                    return (
+                      <div style={{ display: "flex" }}>
+                        <input
+                          type="radio"
+                          value={employeeId}
+                          name="employeeRadio"
+                          checked={employeeId === ele.id}
+                          onChange={() => setEmployeeId(ele.id)}
+                        />
+                        <p color="black" style={{ marginLeft: "20px" }}>
+                          {ele.email}
+                        </p>
+                      </div>
+                    );
+                  })}
+                <div style={{ display: "flex", marginTop: "20px" }}>
+                  <span
+                    onClick={handleAssigneDone}
+                    style={{
+                      marginRight: "20px",
+                      backgroundColor: "green",
+                      padding: "5px",
+                      borderRadius: "3px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p style={{ color: "white" }}> Assign </p>
+                  </span>
+                  <span
+                    onClick={closeModal}
+                    style={{
+                      marginRight: "20px",
+                      backgroundColor: "red",
+                      padding: "5px",
+                      borderRadius: "3px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p style={{ color: "white" }}> Close </p>
+                  </span>
+                </div>
+                {/* <p>Modal Content Goes Here</p> */}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -182,7 +297,7 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
 export default Tablebox;
 
 let tableArr = [
-  ["", "Date", "Name", "Mobile", "Loan Amount", "Status", "Remark", "Edit"],
+  ["", "Date", "Name", "Gender", "Mobile", "Loan Amount", "Status", "Remark", "Edit"],
   [
     <Link color="blue.500">65454-sdvsdv</Link>,
     "Irvine , California , USA",
