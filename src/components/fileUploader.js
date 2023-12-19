@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
-import { Input, Box, Text, Button } from "@chakra-ui/react";
+import { Input, Box, Text, Button, useToast } from "@chakra-ui/react";
 import axios from 'axios';
 import { uploadbulklead } from "../services/api"
 
@@ -9,6 +9,7 @@ const FileUploader = ({ onUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const token = localStorage.getItem("jwt_token");
+  const toast = useToast();
 
   const readExcelFile = (file) => {
     const reader = new FileReader();
@@ -49,10 +50,22 @@ const FileUploader = ({ onUpload }) => {
         .then((response) => {
           console.log('File uploaded successfully:', response.data);
           // Handle response if needed
+          toast({
+            title: `File uploaded successfully`,
+            status: "success",
+            position: "top-right",
+            isClosable: true,
+          });
         })
         .catch((error) => {
           console.error('Error uploading file:', error);
           // Handle error if needed
+          toast({
+            title: `File uploading Failed`,
+            status: "error",
+            position: "top-right",
+            isClosable: true,
+          });
         });
     }
   };
