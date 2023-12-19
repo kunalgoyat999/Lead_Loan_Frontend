@@ -5,9 +5,9 @@ import {
   Select,
   Input,
   Button,
-  
+  useToast,
 } from "@chakra-ui/react";
-import { useLocation, useToast } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getSingleLead, updateLead } from "../services/api";
 
 const SingleLead = () => {
