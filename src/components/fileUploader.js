@@ -1,10 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
+import { Input, Box, Text, Button } from "@chakra-ui/react";
+import axios from 'axios';
+import { uploadbulklead } from "../services/api"
 
 const FileUploader = ({ onUpload }) => {
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const token = localStorage.getItem("jwt_token");
+
+  const readExcelFile = (file) => {
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -13,33 +19,69 @@ const FileUploader = ({ onUpload }) => {
       const sheetName = workbook.SheetNames[0];
       const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
       onUpload(excelData);
+      setUploading(false);
     };
 
     reader.readAsBinaryString(file);
-  }, [onUpload]);
+  };
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setSelectedFile(file);
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const handleFileChange = () => {
+    if (selectedFile) {
+      setUploading(true);
+      readExcelFile(selectedFile);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    console.log("file", file)
+      // Add logic to send file to API with token in headers
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-    setSelectedFile(file);
-    // Handle the selected file as needed
+      axios.post('http://15.206.88.137:8009/leads/imports', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          console.log('File uploaded successfully:', response.data);
+          // Handle response if needed
+        })
+        .catch((error) => {
+          console.error('Error uploading file:', error);
+          // Handle error if needed
+        });
+    }
   };
 
   return (
-    <div>
-      <h1>File Input Example</h1>
-      <input type="file" onChange={handleFileChange} />
+    <Box mx="6em">
+      <Text mb={4}>File Input Example</Text>
+
+      <Box {...getRootProps()} style={dropzoneStyles}>
+        <Input {...getInputProps()} />
+        {isDragActive ? (
+          <p>Drop the file here...</p>
+        ) : (
+          <p>Drag & drop a file here, or click to select a file</p>
+        )}
+      </Box>
+
       {selectedFile && (
-        <p>
+        <Text mt={4}>
           Selected File: {selectedFile.name} (Size: {selectedFile.size} bytes)
-        </p>
+        </Text>
       )}
-    </div>
+
+      <Button mt={4} colorScheme="teal" onClick={handleFileChange}>
+        Upload
+      </Button>
+
+      {uploading && <p>Uploading...</p>}
+    </Box>
   );
 };
 

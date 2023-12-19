@@ -13,8 +13,8 @@ export const getLeadByEmployee = (token, id) => {
   return apiWithHeader(token).get(`/leads/emp/${id}`)
 }
 
-export const getAllLeadByAdmin = (token) => {
-  return apiWithHeader(token).get(`/leads`)
+export const getAllLeadByAdmin = (token,offset=1) => {
+  return apiWithHeader(token).get(`/leads?limit=10&offset=${offset}`)
 }
 
 export const getAllLeadId = (token, id) => {
@@ -35,4 +35,8 @@ export const assignLead = (token, id, data) => {
 
 export const getAllEmployees = (token) => {
   return apiWithHeader(token).get( '/all-employees')
+}
+
+export const uploadbulklead = (token,data) => {
+  return apiWithHeader(token).post( '/leads/imports',data)
 }
