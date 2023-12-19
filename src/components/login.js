@@ -48,6 +48,13 @@ const LoginBox = () => {
             if (res.data.user.role !== "ADMIN") {
               localStorage.setItem("empolyeeId", res.data.user.id);
             }
+            let success = "Login Successful";
+            toast({
+              title: `${success}`,
+              status: "success",
+              position: "bottom",
+              isClosable: true,
+            });
     
             navigate("/dashboard");
           }

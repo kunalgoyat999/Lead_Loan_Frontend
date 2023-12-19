@@ -15,6 +15,7 @@ import {
   background,
   Heading,
   Text,
+  Flex
 } from "@chakra-ui/react";
 import "../App.css";
 import { GrFormNext } from "react-icons/gr";
@@ -22,6 +23,7 @@ import FileUploader from "./fileUploader";
 import { useEffect, useState } from "react";
 import { getAllLeadByAdmin, getLeadByEmployee } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { FiEdit } from "react-icons/fi";
 
 const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
   const [admin, setAdmin] = useState(false);
@@ -88,19 +90,20 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
 
   return (
     <div style={{}}>
-      <Text as="b" fontSize="3xl" m="1">
+      {/* <Text >
         Welcome to Fin Access
-      </Text>
+      </Text> */}
 
       {admin && (
         <>
+        <Flex justify="flex-end"> 
           <Button
-            colorScheme={btncolor ? btncolor : "blue"}
-            bg={btncolor ? btncolor : "#4160D8"}
+            colorScheme={btncolor ? btncolor : "teal"}
+            bg={btncolor ? btncolor : "teal"}
             fontSize="medium"
             fontWeight="normal"
             px="3em"
-            ml="20%"
+            mr="6em"
             my="2em"
             mt="7em"
             onClick={() => handleAssign()}
@@ -108,6 +111,7 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
             {`${btn_title} `}
             {btncolor == "red" ? "" : ""}
           </Button>
+          </Flex>
 
           <FileUploader onUpload={handleUpload} />
         </>
@@ -118,12 +122,13 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
         }}
       >
         <TableContainer
-          w={wid ? wid : "60%"}
+          w={wid ? wid : "85%"}
           m="auto"
+          mt='3em'
           border="1px solid #D9D9D9"
           borderRadius="0.5em"
         >
-          <Table variant="striped" colorScheme="whiteAlpha" size="md">
+          <Table variant="striped" colorScheme="teal" >
             <Thead className="table_head">
               <Tr background="#FAFAFA">
                 {tableArr[0].map((ele) => (
@@ -148,27 +153,19 @@ const Tablebox = ({ btn_title, path, jobslist, btnremove, wid, btncolor }) => {
                         <Td>{ele.name}</Td>
                         <Td>{ele.gender}</Td>
                         <Td>{ele.loan_amount}</Td>
-                        <Td>{ele.status}</Td>
+                        <Td>{ele.status.toUpperCase()}</Td>
                         <Td>
                           {ele.remark != null
                             ? ele.remark[ele.remark.length - 1].message
                             : "NO_REMARK"}
                         </Td>
                         <Td>
-                          <div
-                            style={{
-                              backgroundColor: "blue",
-                              paddingRight: "1.5em",
-                              paddingLeft: "1.5em",
-                              paddingTop: "0.6em",
-                              paddingBottom: "0.6em",
-                              borderRadius: "0.5em",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => handleEditClick(ele.id)}
+                          <Button h='7'
+                          bg='transparent'
+                          onClick={() => handleEditClick(ele.id)}
                           >
-                            <p style={{ color: "white" }}>Edit</p>
-                          </div>
+                          <FiEdit />
+                          </Button>
                         </Td>
                       </Tr>
                     );

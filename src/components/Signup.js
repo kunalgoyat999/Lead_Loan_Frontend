@@ -74,25 +74,36 @@ const SignupBox = () => {
       try {
         console.log("formData", token, formData);
         createUser(token, formData).then((res) => {
-          console.log("resss", res, res.data);
-          // if(res.data.message == "admin login succesfully"){
-          if (res.data.message == "") {
+
+          if(res.status == 409){
+            let success = "User not created";
             toast({
-              title: "Account created.",
-              description: "We've created your account for you.",
-              status: "success",
-              duration: 9000,
-              isClosable: true,
-            });
-          } else {
-            toast({
-              title: "Account created.",
-              description: "We've created your account for you.",
-              status: "success",
-              duration: 9000,
+              title: `${success}`,
+              status: "error",
+              position: "bottom",
               isClosable: true,
             });
           }
+          
+          if (res.data.message == "User created Succefully") {
+            let success = "User created Succefully";
+            toast({
+              title: `${success}`,
+              status: "success",
+              position: "bottom",
+              isClosable: true,
+            });
+          } else {
+            let success = "User not created";
+            toast({
+              title: `${success}`,
+              status: "error",
+              position: "bottom",
+              isClosable: true,
+            });
+          }
+
+          
 
           // }
         });
