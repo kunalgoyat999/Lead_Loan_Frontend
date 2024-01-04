@@ -42,7 +42,7 @@ const FileUploader = ({ onUpload }) => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      axios.post('http://15.206.88.137:8009/leads/imports', formData, {
+      axios.post('http://13.200.255.136:8009/leads/imports', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
