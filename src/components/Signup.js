@@ -74,8 +74,8 @@ const SignupBox = () => {
       try {
         console.log("formData", token, formData);
         createUser(token, formData).then((res) => {
-
-          if(res.status == 409){
+          console.log("res", res)
+          if (res.status == 409) {
             let success = "User not created";
             toast({
               title: `${success}`,
@@ -84,7 +84,7 @@ const SignupBox = () => {
               isClosable: true,
             });
           }
-          
+
           if (res.data.message == "User created Succefully") {
             let success = "User created Succefully";
             toast({
@@ -102,8 +102,6 @@ const SignupBox = () => {
               isClosable: true,
             });
           }
-
-          
 
           // }
         });

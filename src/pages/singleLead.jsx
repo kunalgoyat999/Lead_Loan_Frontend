@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Text,
-  Select,
-  Input,
-  Button,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Text, Select, Input, Button, useToast } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import { getSingleLead, updateLead } from "../services/api";
 
@@ -53,8 +46,9 @@ const SingleLead = () => {
       status: selectedOption,
     };
 
-    updateLead(id, data)
+    updateLead(token, id, data)
       .then((res) => {
+
         if (res.data === "Lead updated successfully") {
           let success = "Lead updated successfully";
           toast({
@@ -104,7 +98,8 @@ const SingleLead = () => {
             const formattedTime = dateObject.toLocaleTimeString();
             return (
               <Text key={index} ml="4">
-               {(index+1) +")."} {ele.message}  - [{formattedDate ? formattedDate : '-' }]
+                {index + 1 + ")."} {ele.message} - [
+                {formattedDate ? formattedDate : "-"}]
               </Text>
             );
           })

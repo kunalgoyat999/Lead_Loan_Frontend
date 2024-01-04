@@ -26,6 +26,7 @@ export const getSingleLead = (token, id) => {
 }
 
 export const updateLead = (token, id, data) => {
+  console.log("token, id, data", token, id, data)
   return apiWithHeader(token).put(`/leads/${id}`, data)
 }
 
